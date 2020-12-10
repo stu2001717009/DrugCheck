@@ -15,35 +15,35 @@ public class ActiveIngredientInteractionBean {
 	@Id
 	@Column(name="Id")
 	@GeneratedValue
-	private int Id;
+	private int id;
 	
 	@OneToOne
-	private ActiveIngredientBean FirstActiveIngredient;
+	private ActiveIngredientBean firstActiveIngredient;
 	
 	@OneToOne
-	private ActiveIngredientBean SecondActiveIngredient;
+	private ActiveIngredientBean secondActiveIngredient;
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this.Id = id;
+		this.id = id;
 	}
 
 	public ActiveIngredientBean getFirstActiveIngredient() {
-		return FirstActiveIngredient;
+		return firstActiveIngredient;
 	}
 
 	public void setFirstActiveIngredient(ActiveIngredientBean ingredient) {
-		this.FirstActiveIngredient = ingredient;
+		this.firstActiveIngredient = ingredient;
 	}
 	
 	public ActiveIngredientBean getSecondActiveIngredient() {
-		return SecondActiveIngredient;
+		return secondActiveIngredient;
 	}
 
 	public void setSecondActiveIngredient(ActiveIngredientBean ingredient) {
-		this.SecondActiveIngredient = ingredient;
+		this.secondActiveIngredient = ingredient;
 	}
 }

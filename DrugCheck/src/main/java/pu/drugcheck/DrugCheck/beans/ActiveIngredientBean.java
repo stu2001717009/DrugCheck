@@ -14,24 +14,24 @@ public class ActiveIngredientBean {
 	@Id
 	@Column(name="Id")
 	@GeneratedValue
-	private int Id;
+	private int id;
 
 	@Column(name = "Name",  nullable = false)
-	private String Name;
+	private String name;
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this.Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}	
 }
