@@ -11,33 +11,65 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { MedicineModel } from '../../models/medicineModel';
+import Growl from '../../common/growl/growl';
 
 const medicineService: MedicineService = new MedicineService();
 const activeIngredientService: ActiveIngredientService = new ActiveIngredientService();
+let growl: any;
 
 const MedicineAddEditComponent = (props: any) => {
     const [activeIngredients, setActiveIngredients] = useState<Array<ActiveIngredientModel>>();
     const [activeIngredient, setActiveIngredient] = useState<number>(0);
     const [medicine, setMedicine] = useState<MedicineModel>(props.medicine);
 
-    useEffect(() => {
+    const getActiveIngredients = () => {
         activeIngredientService.getActiveIngredients().then(res => {
             setActiveIngredients(res);
+            if (props.medicine && props.medicine.activeIngredient)
+                setActiveIngredient(props.medicine.activeIngredient.id);
+        }).catch(err => {
+            if (growl)
+                growl.show({ severity: 'error', summary: 'Error getting active ingredients' });
         });
-    }, [])
+    }
 
-    useEffect(() => {
-        if (props.medicine && props.medicine.activeIngredient)
+    useEffect(getActiveIngredients, [props.medicine]);
+
+    const checkMed = () => {
+        if (props.medicine && props.medicine.activeIngredient && activeIngredients && activeIngredients.length > 0)
             setActiveIngredient(props.medicine.activeIngredient.id);
-    }, [props.medicine])
+    };
+
+    useEffect(checkMed, [props.medicine, activeIngredients])
 
     const saveMedicine = () => {
+        if (!activeIngredient || !medicine.name || !medicine.tabletsPackage ||
+            medicine.name.trim() === '' || medicine.tabletsPackage.trim() === '') {
+            growl.show({ severity: 'warning', summary: 'Flease fill all fields' });
+            return;
+        }
 
+        medicine.activeIngredient = new ActiveIngredientModel();
+        medicine.activeIngredient.id = activeIngredient;
+        if (medicine.id && medicine.id > 0) {
+            medicineService.updateMedicine(medicine).then(res => {
+                props.setIsVisible(false, true);
+            }).catch(err => {
+                if (growl)
+                    growl.show({ severity: 'error', summary: 'Error updating medicine' });
+            });
+        }
+        else {
+            medicineService.addMedicine(medicine).then(res => {
+                props.setIsVisible(false, true);
+            }).catch(err => {
+                if (growl)
+                    growl.show({ severity: 'error', summary: 'Error creating medicine' });
+            });
+        }
     }
 
-    const changeActiveIngredient = (value) => {
-        setActiveIngredient(value);
-    }
+    const changeActiveIngredient = (value) => setActiveIngredient(value);
 
     const onChange = (prop, value) => {
         let med = { ...medicine };
@@ -46,8 +78,10 @@ const MedicineAddEditComponent = (props: any) => {
     }
 
     return (
-        <Dialog open={props.isVisible} onClose={() => props.setIsVisible(false)}>
-            <Modal.DialogTitle onClose={() => props.setIsVisible(false)}>{props.isEdit ? 'Edit medicine' : 'Add medicine'}</Modal.DialogTitle>
+        <Dialog open={props.isVisible} onClose={() => props.setIsVisible(false, false)}>
+            <Growl ref={(r) => growl = r} />
+            <Modal.DialogTitle onClose={() => props.setIsVisible(false, false)}>{props.medicine && props.medicine.id
+                ? 'Edit medicine' : 'Add medicine'}</Modal.DialogTitle>
             <Modal.DialogContent>
                 <div className="dialog-content">
                     <FormControl>
@@ -67,19 +101,20 @@ const MedicineAddEditComponent = (props: any) => {
                         value={medicine && medicine.name ? medicine.name : ''}
                         onChange={e => onChange('name', e.target.value)}
                         label="Name"
-                        style={{ marginBottom: 20 }} />
-                    <TextField
-                        value={medicine && medicine.shortDescription ? medicine.shortDescription : ''}
-                        onChange={e => onChange('shortDescription', e.target.value)}
-                        label="Short description"
                         style={{ marginBottom: 20 }}
-                        multiline />
+                        error={medicine && medicine.name && medicine.name === '' ? true : false} />
+                    <TextField
+                        value={medicine && medicine.tabletsPackage ? medicine.tabletsPackage : ''}
+                        onChange={e => onChange('tabletsPackage', e.target.value)}
+                        label="Package"
+                        style={{ marginBottom: 20 }}
+                        error={medicine && medicine.tabletsPackage && medicine.tabletsPackage === '' ? true : false} />
                 </div>
             </Modal.DialogContent>
             <Modal.DialogActions>
                 <div className="dialog-actions">
                     <Button variant="contained" color="primary" onClick={saveMedicine} style={{ marginRight: '10px' }}>Save</Button>
-                    <Button variant="contained" color="default" onClick={() => props.setIsVisible(false)}>Close</Button>
+                    <Button variant="contained" color="default" onClick={() => props.setIsVisible(false, false)}>Close</Button>
                 </div>
             </Modal.DialogActions>
         </Dialog>

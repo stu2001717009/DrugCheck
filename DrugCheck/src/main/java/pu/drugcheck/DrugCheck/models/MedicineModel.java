@@ -3,7 +3,7 @@ package pu.drugcheck.DrugCheck.models;
 public class MedicineModel {
     private int id;
     private String name;
-    private String shortDescription;
+    private String tabletsPackage;
     private ActiveIngredientModel activeIngredient;
     
     public int getId() {
@@ -22,12 +22,12 @@ public class MedicineModel {
 		this.name = name;
 	}
 
-	public String getShortDescription() {
-		return shortDescription;
+	public String getTabletsPackage() {
+		return tabletsPackage;
 	}
 
-	public void setShortDescription(String description) {
-		this.shortDescription = description;
+	public void setTabletsPackage(String tabletsPackage) {
+		this.tabletsPackage = tabletsPackage;
 	}
 	
 	public ActiveIngredientModel getActiveIngredient() {

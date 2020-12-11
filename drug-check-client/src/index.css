@@ -8,7 +8,7 @@ html, body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color:  #dddddd;;
+  background-color:  #f3f3f3;;
 }
 
 code {
@@ -61,7 +61,7 @@ code {
   color: white;
   justify-content: center;
   align-items: center;
-  border-radius: 15px;
+  border-radius: 10px;
   cursor: pointer;
   text-align: center;
 }
@@ -69,9 +69,9 @@ code {
 .medicine-section{
   width: 50%;
   height: 100%;
-  background-color: #ffc374;
-  border-radius: 15px;
-  color: #113673;
+  background-color: #e77a7a;
+  border-radius: 10px;
+  color: white;
   display: flex;
   justify-content: center;
   font-size: 25px;
@@ -84,9 +84,9 @@ code {
 .active-ingredients-section{
   width: 50%;
   height: 100%; 
-  background-color: #d9d9ff;
-  border-radius: 15px;
-  color: #113673;
+  background-color: #8eb580;
+  border-radius: 10px;
+  color: white;
   display: flex;
   justify-content: center;
   font-size: 25px;
@@ -106,7 +106,7 @@ code {
   cursor: pointer;
 }
 
-.medicine-container{
+.container{
   padding: 60px 40px;
 }
 
@@ -118,4 +118,67 @@ code {
   display: flex;
   flex-direction: column;
   width: 300px;
+}
+
+.interaction-item{
+  display: flex;
+  align-items: center;
+}
+
+.interaction-item div{
+  margin-left: 10px;
+}
+
+.interactions-dialog{
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.check-container{
+  display: flex;
+}
+
+.check-item{
+  width: 50%;
+}
+
+.title-button{
+  display: flex;
+  align-items: center;
+}
+
+.title-button h3{
+  margin-right: 20px;
+}
+
+.list{
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin-top: 20px
+}
+
+.list-item{
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.paper{
+  padding: 20px;
+}
+
+.interaction-check-buttons{
+  display: flex;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.check-item div{
+  font-size: 20px;
+}
+
+.interaction-text{
+  font-size: 18px;
+  color: #ca5c5c;
 }

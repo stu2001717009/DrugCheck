@@ -1,22 +1,32 @@
 package pu.drugcheck.DrugCheck.models;
+import java.util.List;
 
 public class ActiveIngredientModel {
-    private int Id;
-    private String Name;
+    private int id;
+    private String name;
+    private List<Integer> interactions;
     
     public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this.Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
+	}
+	
+	public List<Integer> getInteractions() {
+		return interactions;
+	}
+	
+	public void setInteractions(List<Integer> interactions) {
+		this.interactions = interactions;
 	}
 }

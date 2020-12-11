@@ -20,8 +20,8 @@ public class MedicineBean {
 	@Column(name = "Name",  nullable = false)
 	private String name;
 	
-	@Column(name = "ShortDescription", nullable = true)
-	private String shortDescription;
+	@Column(name = "TabletsPackage", nullable = true)
+	private String tabletsPackage;
 	
 	@OneToOne
 	private ActiveIngredientBean activeIngredient;
@@ -42,12 +42,12 @@ public class MedicineBean {
 		this.name = name;
 	}
 
-	public String getShortDescription() {
-		return shortDescription;
+	public String getTabletsPackage() {
+		return tabletsPackage;
 	}
 
-	public void setShortDescription(String description) {
-		this.shortDescription = description;
+	public void setTabletsPackage(String tabletsPackage) {
+		this.tabletsPackage = tabletsPackage;
 	}
 	
 	public ActiveIngredientBean getActiveIngredient() {
