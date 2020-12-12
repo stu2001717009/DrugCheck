@@ -21,6 +21,9 @@ const MedicineAddEditComponent = (props: any) => {
     const [activeIngredients, setActiveIngredients] = useState<Array<ActiveIngredientModel>>();
     const [activeIngredient, setActiveIngredient] = useState<number>(0);
     const [medicine, setMedicine] = useState<MedicineModel>(props.medicine);
+    const [nameErr, setNameErr] = useState<boolean>(false);
+    const [selectErr, setSelectErr] = useState<boolean>(false);
+    const [packageErr, setPackageErr] = useState<boolean>(false);
 
     const getActiveIngredients = () => {
         activeIngredientService.getActiveIngredients().then(res => {
@@ -43,9 +46,18 @@ const MedicineAddEditComponent = (props: any) => {
     useEffect(checkMed, [props.medicine, activeIngredients])
 
     const saveMedicine = () => {
+        setNameErr(false);
+        setPackageErr(false);
+        setSelectErr(false);
         if (!activeIngredient || !medicine.name || !medicine.tabletsPackage ||
             medicine.name.trim() === '' || medicine.tabletsPackage.trim() === '') {
-            growl.show({ severity: 'warning', summary: 'Flease fill all fields' });
+            if (!medicine.name || medicine.name.trim() === '')
+                setNameErr(true);
+            if (!medicine.tabletsPackage || medicine.tabletsPackage.trim() === '')
+                setPackageErr(true);
+            if (!activeIngredient)
+                setSelectErr(true);
+
             return;
         }
 
@@ -78,46 +90,51 @@ const MedicineAddEditComponent = (props: any) => {
     }
 
     return (
-        <Dialog open={props.isVisible} onClose={() => props.setIsVisible(false, false)}>
+        <>
             <Growl ref={(r) => growl = r} />
-            <Modal.DialogTitle onClose={() => props.setIsVisible(false, false)}>{props.medicine && props.medicine.id
-                ? 'Edit medicine' : 'Add medicine'}</Modal.DialogTitle>
-            <Modal.DialogContent>
-                <div className="dialog-content">
-                    <FormControl>
-                        <InputLabel id="marker-type-label">Active ingredient</InputLabel>
-                        <Select value={activeIngredient > 0 ? activeIngredient : ''}
-                            onChange={(e) => changeActiveIngredient(e.target.value)}
-                            labelId="marker-type-label"
-                            id="marker-type"
-                            style={{ marginBottom: 20, width: '100%' }}>
-                            {activeIngredients ?
-                                activeIngredients.map(r => <MenuItem key={'aI' + r.id} value={r.id}>
-                                    {r.name}
-                                </MenuItem>) : null}
-                        </Select>
-                    </FormControl>
-                    <TextField
-                        value={medicine && medicine.name ? medicine.name : ''}
-                        onChange={e => onChange('name', e.target.value)}
-                        label="Name"
-                        style={{ marginBottom: 20 }}
-                        error={medicine && medicine.name && medicine.name === '' ? true : false} />
-                    <TextField
-                        value={medicine && medicine.tabletsPackage ? medicine.tabletsPackage : ''}
-                        onChange={e => onChange('tabletsPackage', e.target.value)}
-                        label="Package"
-                        style={{ marginBottom: 20 }}
-                        error={medicine && medicine.tabletsPackage && medicine.tabletsPackage === '' ? true : false} />
-                </div>
-            </Modal.DialogContent>
-            <Modal.DialogActions>
-                <div className="dialog-actions">
-                    <Button variant="contained" color="primary" onClick={saveMedicine} style={{ marginRight: '10px' }}>Save</Button>
-                    <Button variant="contained" color="default" onClick={() => props.setIsVisible(false, false)}>Close</Button>
-                </div>
-            </Modal.DialogActions>
-        </Dialog>
+            <Dialog open={props.isVisible} onClose={() => props.setIsVisible(false, false)}>
+                <Modal.DialogTitle onClose={() => props.setIsVisible(false, false)}>{props.medicine && props.medicine.id
+                    ? 'Edit medicine' : 'Add medicine'}</Modal.DialogTitle>
+                <Modal.DialogContent>
+                    <div className="dialog-content">
+                        <FormControl>
+                            <InputLabel id="marker-type-label">Active ingredient</InputLabel>
+                            <Select value={activeIngredient > 0 ? activeIngredient : ''}
+                                onChange={(e) => changeActiveIngredient(e.target.value)}
+                                labelId="marker-type-label"
+                                id="marker-type"
+                                style={{ marginBottom: 20, width: '100%' }}
+                                error={selectErr}>
+                                {activeIngredients ?
+                                    activeIngredients.map(r => <MenuItem key={'aI' + r.id} value={r.id}>
+                                        {r.name}
+                                    </MenuItem>) : null}
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            value={medicine && medicine.name ? medicine.name : ''}
+                            onChange={e => onChange('name', e.target.value)}
+                            label="Name"
+                            style={{ marginBottom: 20 }}
+                            error={nameErr}
+                            helperText={nameErr ? 'Please fill the field' : null} />
+                        <TextField
+                            value={medicine && medicine.tabletsPackage ? medicine.tabletsPackage : ''}
+                            onChange={e => onChange('tabletsPackage', e.target.value)}
+                            label="Package"
+                            style={{ marginBottom: 20 }}
+                            error={packageErr}
+                            helperText={packageErr ? 'Please fill the field' : null} />
+                    </div>
+                </Modal.DialogContent>
+                <Modal.DialogActions>
+                    <div className="dialog-actions">
+                        <Button variant="contained" color="primary" onClick={saveMedicine} style={{ marginRight: '10px' }}>Save</Button>
+                        <Button variant="contained" color="default" onClick={() => props.setIsVisible(false, false)}>Close</Button>
+                    </div>
+                </Modal.DialogActions>
+            </Dialog>
+        </>
     );
 }
 

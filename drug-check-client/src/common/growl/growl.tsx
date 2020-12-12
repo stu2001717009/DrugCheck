@@ -24,6 +24,7 @@ class Growl extends React.Component<IProps, IState> {
     }
 
     show(value: any) {
+        console.log('asdasd')
         this.setState({ isOpen: true, summary: value.summary, severity: value.severity });
     }
 
@@ -40,7 +41,7 @@ class Growl extends React.Component<IProps, IState> {
                     horizontal: 'left',
                 }}
                 open={this.state.isOpen}
-                autoHideDuration={this.state.summary ? this.state.summary.length * 140 : 4000}
+                autoHideDuration={this.state.summary ? this.state.summary.length * 1400 : 40000}
                 onClose={this.handleClose}
             >
                 <GrowlContent

@@ -26,7 +26,6 @@ public class MedicineServiceImpl implements MedicineService {
     @Autowired
     private ActiveIngredientInteractionRepo activeIngredientInteractionRepository;
 
-    @Override
     public List<MedicineModel> getAllMedicines() {
 
         List<MedicineModel> medicineModels = new ArrayList<>();
@@ -39,7 +38,6 @@ public class MedicineServiceImpl implements MedicineService {
         return medicineModels;
     }
     
-    @Override
     public List<MedicineModel> searchMedicines(String medicineName){
     	List<MedicineModel> medicineModels = new ArrayList<>();
 
@@ -50,7 +48,6 @@ public class MedicineServiceImpl implements MedicineService {
     	return medicineModels;
     }
     
-    @Override
     public boolean checkInteraction(int firstId, int secondId) {
     	MedicineBean firstMed = this.medicineRepository.findOneById(firstId);
     	MedicineBean secondMed = this.medicineRepository.findOneById(secondId);
@@ -61,7 +58,6 @@ public class MedicineServiceImpl implements MedicineService {
     	return interactionId != null && interactionId > 0 ? true : false;
     }
 
-    @Override
     public void createMedicine(MedicineModel med) {
     	MedicineBean medicine = this.modelMapper.map(med, MedicineBean.class);
     	this.medicineRepository.save(medicine);
@@ -75,7 +71,6 @@ public class MedicineServiceImpl implements MedicineService {
     	this.medicineRepository.saveAndFlush(medicine);
     }
     
-    @Override
     public void deleteMedicine(int medicineId) {
     	MedicineBean medicine =this.medicineRepository.findOneById(medicineId);
     	this.medicineRepository.deleteById(medicine.getId());

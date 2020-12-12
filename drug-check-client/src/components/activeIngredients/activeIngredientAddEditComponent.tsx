@@ -13,10 +13,18 @@ let growl: any;
 
 const ActiveIngredientAddEditComponent = (props: any) => {
     const [activeIngredient, setActiveIngredient] = useState<ActiveIngredientModel>(props.activeIngredient);
+    const [nameErr, setNameErr] = useState<boolean>(false);
+    const [selectErr, setSelectErr] = useState<boolean>(false);
+
 
     const saveActiveIngredients = () => {
-        if (!activeIngredient || !activeIngredient.name) {
-            growl.show({ severity: 'warning', summary: 'Flease fill all fields' });
+        setNameErr(false);
+        setSelectErr(false);
+        if (!activeIngredient || !activeIngredient.name || !activeIngredient.interactions || activeIngredient.interactions.length === 0) {
+            if (!activeIngredient.name || activeIngredient.name.trim() === '')
+                setNameErr(true);
+            if (!activeIngredient.interactions || activeIngredient.interactions.length === 0)
+                setSelectErr(true);
             return;
         }
 
@@ -70,20 +78,24 @@ const ActiveIngredientAddEditComponent = (props: any) => {
                         onChange={e => onChange('name', e.target.value)}
                         label="Name"
                         style={{ marginBottom: 20 }}
-                        error={activeIngredient && activeIngredient.name && activeIngredient.name === '' ? true : false} />
-                    <div className="interactions-dialog">
-                        <span style={{ fontSize: 13, color: 'gray' }}>Interactions</span>
-                        {props.otherActiveIngredients.map(r => {
-                            return <div key={'interaction' + r.id} className="interaction-item">
-                                <Checkbox
-                                    checked={(activeIngredient && activeIngredient.interactions &&
-                                        activeIngredient.interactions.some(i => i === r.id)) || false}
-                                    onChange={() => handleInteractionClick(r.id)}
-                                    inputProps={{ 'aria-label': 'primary checkbox' }}
-                                />
-                                <div>{r.name}</div>
-                            </div>
-                        })}
+                        error={nameErr}
+                        helperText={nameErr ? 'Please fill the field' : null} />
+                    <div>
+                        <div className="interactions-dialog">
+                            <span style={{ fontSize: 13, color: 'gray' }}>Interactions</span>
+                            {props.otherActiveIngredients.map(r => {
+                                return <div key={'interaction' + r.id} className="interaction-item">
+                                    <Checkbox
+                                        checked={(activeIngredient && activeIngredient.interactions &&
+                                            activeIngredient.interactions.some(i => i === r.id)) || false}
+                                        onChange={() => handleInteractionClick(r.id)}
+                                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                                    />
+                                    <div>{r.name}</div>
+                                </div>
+                            })}
+                        </div>
+                        {selectErr ? <div className="error-text">Please choose active ingredient</div> : null}
                     </div>
                 </div>
             </Modal.DialogContent>

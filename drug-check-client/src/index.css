@@ -182,3 +182,8 @@ code {
   font-size: 18px;
   color: #ca5c5c;
 }
+
+.error-text{
+  color: red;
+  font-size: 13px;
+}

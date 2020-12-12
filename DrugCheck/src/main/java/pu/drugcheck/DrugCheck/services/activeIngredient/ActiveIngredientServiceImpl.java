@@ -27,7 +27,6 @@ public class ActiveIngredientServiceImpl implements ActiveIngredientService {
     private ActiveIngredientInteractionRepo activeIngredientInteractionRepository;
 
 
-    @Override
     public List<ActiveIngredientModel> getAllActiveIngredients() {
 
         List<ActiveIngredientModel> aIngredientsModels = new ArrayList<>();
@@ -39,8 +38,7 @@ public class ActiveIngredientServiceImpl implements ActiveIngredientService {
 
         return aIngredientsModels;
     }
-    
-    @Override
+
     public List<ActiveIngredientModel> getAllActiveIngredientsWithInteraction() {
 
         List<ActiveIngredientModel> aIngredientsModels = new ArrayList<>();
@@ -62,7 +60,6 @@ public class ActiveIngredientServiceImpl implements ActiveIngredientService {
         return aIngredientsModels;
     }
 
-    @Override
     public void createActiveIngredient(ActiveIngredientModel aIngredient) {
     	ActiveIngredientBean activeIngredient = new ActiveIngredientBean();
     	activeIngredient.setName(aIngredient.getName());
